@@ -39,28 +39,19 @@ function valid = is_valid_set(nums)
 end
 
 function valid = is_valid_subgrid(board, row, col)
-    subgrid = zeros(1, 9);  % Preallocate a 1x9 vector for the subgrid
-    k = 1;  % Index for the subgrid vector
-
-    % Calculate the starting indices of the subgrid
-    rowStart = (row - 1) * 3 + 1;
-    colStart = (col - 1) * 3 + 1;
-
-    % Iterate over the 3x3 subgrid using nested loops
-    for i = 0:2  % Row offset within the subgrid
-        for j = 0:2  % Column offset within the subgrid
-            subgrid(k) = board(rowStart + i, colStart + j);
-            k = k + 1;  % Move to the next position in the vector
+    subgrid = zeros(1, 0);  % Create a 9x1 array to store the flattened subgrid
+    
+    k = 1;  % Start k at 1 because MATLAB uses 1-based indexing
+    
+    for i = 1:3
+        for j = 1:3  % Iterate over all columns (1 to 3)
+            subgrid(k) = board(row + i - 1, col + j - 1);  % Correct indexing of the board
+            k = k + 1;  % Increment k to move to the next element in subgrid
         end
     end
 
-    % Validate the subgrid
-    valid = is_valid_set(subgrid);
+    %subgrid = board((row-1)*3+1:row*3, (col-1)*3+1:col*3);
+    valid = is_valid_set(subgrid(:));
 end
-
-%function valid = is_valid_subgrid(board, row, col)
- %   subgrid = board((row-1)*3+1:row*3, (col-1)*3+1:col*3);
-  %  valid = is_valid_set(subgrid(:));
-%end
 
 
