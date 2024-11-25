@@ -1,7 +1,7 @@
 function isValid = sudoku_verifier(board)
     isValid = true;
     
-    % Check rows
+    % rows1
     for row = 1:9
         if ~is_valid_set(board(row, :))
             fprintf('Invalid row %d\n', row);
@@ -9,7 +9,7 @@ function isValid = sudoku_verifier(board)
         end
     end
     
-    % Check columns
+    % columns
     for col = 1:9
         if ~is_valid_set(board(:, col))
             fprintf('Invalid column %d\n', col);
@@ -17,11 +17,13 @@ function isValid = sudoku_verifier(board)
         end
     end
     
-    % Check 3x3 subgrids
+    % subgrids
     for row = 1:3
         for col = 1:3
             if ~is_valid_subgrid(board, row, col)
-                fprintf('Invalid 3x3 subgrid at (%d, %d)\n', row, col);
+                rowStart = (row - 1) * 3 + 1;
+                colStart = (col - 1) * 3 + 1;
+                fprintf('Invalid 3x3 subgrid at (%d, %d)\n', rowStart, colStart);
                 isValid = false;
             end
         end
@@ -40,27 +42,27 @@ end
 
 function valid = is_valid_subgrid(board, row, col)
     subgrid = zeros(1, 9);  % Preallocate a 1x9 vector for the subgrid
-    k = 1;  % Index for the subgrid vector
+    k = 1;  % Index for the s   ubgrid vector
 
-    % Calculate the starting indices of the subgrid
+    % total number of subgrids in the grid: 9
+    
     rowStart = (row - 1) * 3 + 1;
     colStart = (col - 1) * 3 + 1;
 
-    % Iterate over the 3x3 subgrid using nested loops
-    for i = 0:2  % Row offset within the subgrid
-        for j = 0:2  % Column offset within the subgrid
+    % 1 2 -> 1 4 each give u different subgrid position
+    % 2 1 -> 4 1
+    % 2 2 -> 4 4
+
+    for i = 0:2  
+        for j = 0:2  
             subgrid(k) = board(rowStart + i, colStart + j);
-            k = k + 1;  % Move to the next position in the vector
+            k = k + 1; 
         end
     end
 
-    % Validate the subgrid
+    % valid? the subgrid
     valid = is_valid_set(subgrid);
 end
 
-%function valid = is_valid_subgrid(board, row, col)
- %   subgrid = board((row-1)*3+1:row*3, (col-1)*3+1:col*3);
-  %  valid = is_valid_set(subgrid(:));
-%end
 
 
